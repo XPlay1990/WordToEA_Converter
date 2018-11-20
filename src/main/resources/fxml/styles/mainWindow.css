@@ -1,0 +1,15 @@
+/*
+ Copyright (C) Jan Adamczyk (j_adamczyk@hotmail.com) 2017
+*/
+/* 
+    Created on : 20.11.2018, 12:04:48
+    Author     : jan.adamczyk
+*/
+
+#btn_Convert {			
+	-fx-base:green;
+	-fx-background-image: url("../../pictures/play.png");
+	-fx-background-size: 50 50;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:left;
+}
