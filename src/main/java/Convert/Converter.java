@@ -3,6 +3,7 @@
  */
 package Convert;
 
+import EAForm.EAFormat;
 import Logging.MyLogger;
 import com.opencsv.CSVWriter;
 import java.io.BufferedOutputStream;
@@ -15,6 +16,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 import org.apache.logging.log4j.Level;
@@ -98,14 +100,40 @@ public class Converter {
 
     private void extractRequirements(XWPFDocument document) {
         Writer writer = null;
+        String lastID;
         try {
             List<XWPFParagraph> paragraphs = document.getParagraphs();
-            ArrayList<String[]> p = new ArrayList<>();
+            ArrayList<String[]> eaFormatsHolder = new ArrayList<>();
             String[] init = {"GUID$Name$Type$Notes$TagValue_CST_ID"};
-            p.add(init);
-            for (XWPFParagraph para : paragraphs) {
-                String[] paragraphText = {para.getParagraphText()};
-                p.add(paragraphText);
+            eaFormatsHolder.add(init);
+
+            Iterator itr = paragraphs.iterator();
+
+            while (itr.hasNext()) {
+                XWPFParagraph paragraph = (XWPFParagraph) itr.next();
+                String paragraphText = paragraph.getParagraphText();
+                if (!(paragraphText.contains("ID"))) {
+                    itr.next();
+                } else {
+                    lastID = paragraphText;
+                    while (itr.hasNext()) {
+                        String id = lastID;
+                        String title = ((XWPFParagraph) itr.next()).getParagraphText();
+                        String description = "";
+
+                        while (itr.hasNext()) {
+                            String text = ((XWPFParagraph) itr.next()).getParagraphText();
+                            if (text.contains("ID")) {
+                                lastID = text;
+                                EAFormat eaFormat = new EAFormat(id, title, description);
+                                eaFormatsHolder.add(eaFormat.getStringArray());
+                                break;
+                            } else {
+                                description += text;
+                            }
+                        }
+                    }
+                }
             }
 
             writer = Files.newBufferedWriter(Paths.get("Requirements.csv"));
@@ -115,7 +143,7 @@ public class Converter {
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END)) {
 
-                csvWriter.writeAll(p);
+                csvWriter.writeAll(eaFormatsHolder);
                 csvWriter.flush();
             }
         } catch (IOException ex) {
@@ -124,6 +152,7 @@ public class Converter {
             try {
                 writer.close();
             } catch (IOException ex) {
+                MyLogger.log(Level.ERROR, ex.getMessage());
             }
         }
     }

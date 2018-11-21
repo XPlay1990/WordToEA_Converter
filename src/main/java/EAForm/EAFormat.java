@@ -9,18 +9,23 @@ package EAForm;
  */
 public class EAFormat {
 
-    String id;
-    String title;
-    String text;
+    private final String eaID = "{}";
+    private final String seperator = "$";
+    private final String requirements = "Requirement";
 
-    public EAFormat(String id, String title, String text) {
+    private String title = "";
+    private String description = "";
+    private String id = "";
+
+    public EAFormat(String id, String title, String description) {
         this.id = id;
         this.title = title;
-        this.text = text;
+        this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "test";
+    public String[] getStringArray() {
+//        description = '\"' + description + '\"';
+        String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + seperator + id};
+        return output;
     }
 }
