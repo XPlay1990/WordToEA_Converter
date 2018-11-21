@@ -15,6 +15,9 @@ public class MyLogger {
 
     private static Logger logger;
 
+    /**
+     *
+     */
     public MyLogger() {
         logger = LogManager.getLogger(MyLogger.class.getName());
     }
@@ -26,6 +29,11 @@ public class MyLogger {
         return logger;
     }
 
+    /**
+     *
+     * @param level
+     * @param msg
+     */
     public static void log(Level level, String msg) {
         getLogger().log(level, msg);
         System.out.println(msg);

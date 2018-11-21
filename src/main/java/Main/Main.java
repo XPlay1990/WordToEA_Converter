@@ -10,6 +10,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
 
+/**
+ *
+ * @author jan.adamczyk
+ */
 public class Main extends Application {
 
     /**

@@ -24,17 +24,27 @@ public class GUIController implements Initializable {
     private Stage stage;
     private File file = new File("C:\\Users\\jan.adamczyk\\Documents\\NetBeansProjects\\WordToEA_Converter\\src\\main\\resources\\REQ\\req.docx");
 
+    /**
+     *
+     * @param stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
 
+    /**
+     *
+     */
     @FXML
     public void selectFile() {
         MyLogger.log(Level.DEBUG, "Choosing File");
@@ -50,9 +60,12 @@ public class GUIController implements Initializable {
         MyLogger.log(Level.DEBUG, "File chosen: " + file);
     }
 
+    /**
+     *
+     */
     @FXML
     public void convert() {
-        MyLogger.log(Level.DEBUG, "Start converting");
+        MyLogger.log(Level.DEBUG, "Start converting File: " + file);
 
         Converter converter = new Converter(file);
         converter.convert();

@@ -17,12 +17,22 @@ public class EAFormat {
     private String description = "";
     private String id = "";
 
+    /**
+     *
+     * @param id
+     * @param title
+     * @param description
+     */
     public EAFormat(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getStringArray() {
 //        description = '\"' + description + '\"';
         String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + seperator + id};
