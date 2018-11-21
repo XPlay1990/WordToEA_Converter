@@ -16,7 +16,7 @@ if (!hasProperty('mainClass')) {
 
 jar {
     manifest {
-        attributes "Main-Class": "Main.ComportTool"
+        attributes "Main-Class": "Main.Main"
     }
  
     from {
