@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.PackagePart;
@@ -57,7 +58,7 @@ public class Converter {
 //            we.getText();
             extractRequirements(document);
         } catch (IOException ex) {
-            MyLogger.log(Level.ERROR, ex.getMessage());
+            MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
         }
     }
 
@@ -69,12 +70,12 @@ public class Converter {
             allPictures.forEach((pic) -> {
                 try (FileOutputStream outputStream = new FileOutputStream("extractedImages/" + pic.getFileName())) {
                     outputStream.write(pic.getData());
-                } catch (IOException e) {
-                    MyLogger.log(Level.ERROR, e.getMessage());
+                } catch (IOException ex) {
+                    MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
                 }
             });
         } catch (IOException ex) {
-            MyLogger.log(Level.ERROR, ex.getMessage());
+            MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
         }
     }
 
@@ -89,7 +90,7 @@ public class Converter {
 //                part.save((ZipOutputStream) zos);
             }
         } catch (FileNotFoundException | OpenXML4JException ex) {
-            MyLogger.log(Level.ERROR, ex.getMessage());
+            MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
         } finally {
             try {
                 fos.close();
@@ -147,12 +148,12 @@ public class Converter {
                 csvWriter.flush();
             }
         } catch (IOException ex) {
-            MyLogger.log(Level.ERROR, ex.getMessage());
+            MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
         } finally {
             try {
                 writer.close();
             } catch (IOException ex) {
-                MyLogger.log(Level.ERROR, ex.getMessage());
+                MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
             }
         }
     }
