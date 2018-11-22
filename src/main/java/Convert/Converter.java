@@ -6,22 +6,30 @@ package Convert;
 import EAForm.EAFormat;
 import Logging.MyLogger;
 import com.opencsv.CSVWriter;
+import com.sun.nio.zipfs.ZipPath;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackagePart;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -51,6 +59,7 @@ public class Converter {
             XWPFDocument document = new XWPFDocument(fis);
 
             extractImages(document);
+            extractAllEmbeddings(document);
 
 //            XWPFWordExtractor we = new XWPFWordExtractor(document);
 //            we.setConcatenatePhoneticRuns(true);
@@ -80,22 +89,15 @@ public class Converter {
     }
 
     private void extractAllEmbeddings(XWPFDocument document) {
-        FileOutputStream fos = null;
         try {
             List<PackagePart> allEmbeddedParts = document.getAllEmbeddedParts();
-            fos = new FileOutputStream("test.zip");
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            ZipOutputStream zos = new ZipOutputStream(bos);
+            File embeddingsFile = new File("embeddings.zip");
             for (PackagePart part : allEmbeddedParts) {
-//                part.save((ZipOutputStream) zos);
+                OPCPackage aPackage = part.getPackage();
+                aPackage.save(embeddingsFile);
             }
-        } catch (FileNotFoundException | OpenXML4JException ex) {
+        } catch (OpenXML4JException | IOException ex) {
             MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException ex) {
-            }
         }
     }
 
