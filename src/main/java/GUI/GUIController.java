@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
@@ -71,5 +73,12 @@ public class GUIController implements Initializable {
         converter.convert();
 
         MyLogger.log(Level.DEBUG, "Finished converting");
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(stage);
+        alert.setTitle("Task finished");
+        alert.setHeaderText(null);
+        alert.setContentText("Converting finished!");
+        alert.showAndWait();
     }
 }
