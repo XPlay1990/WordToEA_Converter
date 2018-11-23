@@ -30,7 +30,7 @@ public class EAFormat {
         this.title = title;
         this.description = "\"" + description;
         if (imageLink != null) {
-            this.imageLink = "<a href=\"\"extractedImages/" + imageLink + "\"\"><font color=\"\"#0000ff\"\"><u>" + imageLink + "</u></font></a>";
+            this.imageLink = "<a href=\"\"extractedImages\\" + imageLink + "\"\"><font color=\"\"#0000ff\"\"><u>" + imageLink + "</u></font></a>";
         }
         this.id = id;
     }
