@@ -11,13 +11,13 @@ public class EAFormat {
 
     private static final String LINEFEED_STRING = "\r\n";
     private final String eaID = "{}";
-    private final String seperator = LINEFEED_STRING + "$";
+    private final String seperator = "$";
     private final String requirements = "Requirement";
 
-    private final String title;
-    private final String description;
-    private final String id;
-    private final String imageLink;
+    private String title = "";
+    private String description = "";
+    private String id = "";
+    private String imageLink;
 
     /**
      *
@@ -28,8 +28,10 @@ public class EAFormat {
      */
     public EAFormat(String id, String title, String description, String imageLink) {
         this.title = title;
-        this.description = description;
-        this.imageLink = LINEFEED_STRING + "=HYPERLINK(" + '\"' + "extractedImages/" + imageLink + '\"' + ")";
+        this.description = "\"" + description;
+        if (imageLink != null) {
+            this.imageLink = "<a href=\"\"extractedImages/" + imageLink + "\"\"><font color=\"\"#0000ff\"\"><u>" + imageLink + "</u></font></a>";
+        }
         this.id = id;
     }
 
@@ -39,7 +41,12 @@ public class EAFormat {
      */
     public String[] getStringArray() {
 //        description = '\"' + description + '\"';
-        String[] output = {eaID + seperator + title + seperator + requirements + seperator + description, imageLink, seperator + id};
-        return output;
+        if (imageLink == null) {
+            String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + "\"" + seperator + id};
+            return output;
+        } else {
+            String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + imageLink + "\"" + seperator + id};
+            return output;
+        }
     }
 }
