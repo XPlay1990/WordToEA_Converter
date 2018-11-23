@@ -9,24 +9,28 @@ package EAForm;
  */
 public class EAFormat {
 
+    private static final String LINEFEED_STRING = "\r\n";
     private final String eaID = "{}";
-    private final String seperator = "$";
+    private final String seperator = LINEFEED_STRING + "$";
     private final String requirements = "Requirement";
 
-    private String title = "";
-    private String description = "";
-    private String id = "";
+    private final String title;
+    private final String description;
+    private final String id;
+    private final String imageLink;
 
     /**
      *
      * @param id
      * @param title
      * @param description
+     * @param imageLink
      */
-    public EAFormat(String id, String title, String description) {
-        this.id = id;
+    public EAFormat(String id, String title, String description, String imageLink) {
         this.title = title;
         this.description = description;
+        this.imageLink = LINEFEED_STRING + "=HYPERLINK(" + '\"' + "extractedImages/" + imageLink + '\"' + ")";
+        this.id = id;
     }
 
     /**
@@ -35,7 +39,7 @@ public class EAFormat {
      */
     public String[] getStringArray() {
 //        description = '\"' + description + '\"';
-        String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + seperator + id};
+        String[] output = {eaID + seperator + title + seperator + requirements + seperator + description, imageLink, seperator + id};
         return output;
     }
 }

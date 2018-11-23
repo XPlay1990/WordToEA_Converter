@@ -6,6 +6,7 @@ package GUI;
 import Convert.Converter;
 import Logging.MyLogger;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -14,7 +15,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 
 /**
  * FXML Controller class
@@ -24,7 +27,7 @@ import org.apache.logging.log4j.Level;
 public class GUIController implements Initializable {
 
     private Stage stage;
-    private File file = new File("C:\\Users\\jan.adamczyk\\Documents\\NetBeansProjects\\WordToEA_Converter\\src\\main\\resources\\REQ\\req.docx");
+    private final File file = new File("C:\\Users\\jan.adamczyk\\Documents\\NetBeansProjects\\WordToEA_Converter\\src\\main\\resources\\REQ\\req.docx");
 
     /**
      *
@@ -68,17 +71,24 @@ public class GUIController implements Initializable {
     @FXML
     public void convert() {
         MyLogger.log(Level.DEBUG, "Start converting File: " + file);
-
-        Converter converter = new Converter(file);
-        converter.convert();
-
+        try {
+            Converter converter = new Converter(file);
+            converter.convert();
+            showAlert(AlertType.INFORMATION, "Converting finished!");
+        } catch (IOException | OpenXML4JException ex) {
+            MyLogger.log(Level.ERROR, ExceptionUtils.getStackTrace(ex));
+            showAlert(AlertType.ERROR, ex.getMessage());
+        }
         MyLogger.log(Level.DEBUG, "Finished converting");
 
-        Alert alert = new Alert(AlertType.INFORMATION);
+    }
+
+    private void showAlert(AlertType type, String text) {
+        Alert alert = new Alert(type);
         alert.initOwner(stage);
         alert.setTitle("Task finished");
         alert.setHeaderText(null);
-        alert.setContentText("Converting finished!");
+        alert.setContentText(text);
         alert.showAndWait();
     }
 }
