@@ -27,7 +27,7 @@ import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 public class GUIController implements Initializable {
 
     private Stage stage;
-    private final File file = new File("C:\\Users\\jan.adamczyk\\Documents\\NetBeansProjects\\WordToEA_Converter\\src\\main\\resources\\REQ\\req.docx");
+    private File file = new File("C:\\Users\\jan.adamczyk\\Documents\\NetBeansProjects\\WordToEA_Converter\\src\\main\\resources\\REQ\\req.docx");
 
     /**
      *
@@ -60,7 +60,7 @@ public class GUIController implements Initializable {
         fileChooser.getExtensionFilters().add(extentionFilter);
         File defaultDirectory = new File("./");
         fileChooser.setInitialDirectory(defaultDirectory);
-        fileChooser.showOpenDialog(stage);
+        file = fileChooser.showOpenDialog(stage);
 
         MyLogger.log(Level.DEBUG, "File chosen: " + file);
     }
