@@ -3,6 +3,8 @@
  */
 package EAForm;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jan.adamczyk
@@ -17,20 +19,22 @@ public class EAFormat {
     private String title = "";
     private String description = "";
     private String id = "";
-    private String imageLink;
+    private ArrayList<String> imageLinks = new ArrayList<>();
 
     /**
      *
      * @param id
      * @param title
      * @param description
-     * @param imageLink
+     * @param imageLinks
      */
-    public EAFormat(String id, String title, String description, String imageLink) {
+    public EAFormat(String id, String title, String description, ArrayList<String> imageLinks) {
         this.title = title;
         this.description = "\"" + description;
-        if (imageLink != null) {
-            this.imageLink = "<a href=\"\"extractedImages\\" + imageLink + "\"\"><font color=\"\"#0000ff\"\"><u>" + imageLink + "</u></font></a>";
+        if (!imageLinks.isEmpty()) {
+            imageLinks.forEach((link) -> {
+                this.imageLinks.add("<a href=\"\"extractedImages\\" + link + "\"\"><font color=\"\"#0000ff\"\"><u>" + link + "</u></font></a>");
+            });
         }
         this.id = id;
     }
@@ -41,11 +45,11 @@ public class EAFormat {
      */
     public String[] getStringArray() {
 //        description = '\"' + description + '\"';
-        if (imageLink == null) {
+        if (imageLinks.isEmpty()) {
             String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + "\"" + seperator + id};
             return output;
         } else {
-            String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + imageLink + "\"" + seperator + id};
+            String[] output = {eaID + seperator + title + seperator + requirements + seperator + description + imageLinks.toString() + "\"" + seperator + id};
             return output;
         }
     }

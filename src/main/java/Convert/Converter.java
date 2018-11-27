@@ -103,7 +103,7 @@ public class Converter {
                 lastID = paragraphText;
                 while (itr.hasNext()) {
                     String id = lastID;
-                    String imageLink = null;
+                    ArrayList<String> imageLinks = new ArrayList<>();
                     String title = ((XWPFParagraph) itr.next()).getParagraphText();
                     String description = "";
 
@@ -111,17 +111,16 @@ public class Converter {
                         String text = ((XWPFParagraph) itr.next()).getParagraphText();
                         if (text.contains("ID")) {
                             lastID = text;
-                            EAFormat eaFormat = new EAFormat(id, title, description, imageLink);
+                            EAFormat eaFormat = new EAFormat(id, title, description, (ArrayList<String>) imageLinks.clone());
                             eaFormatsHolder.add(eaFormat.getStringArray());
-                            imageLink = null;
+                            imageLinks.clear();
                             break;
                         } else {
                             if (text.contains("<image")) {
-                                String linkBuilder;
                                 for (String replace : LINK_STRINGS) {
                                     text = text.replaceAll(replace, "");
                                 }
-                                imageLink = text;
+                                imageLinks.add(text);
                             } else {
                                 description += text;
                             }
